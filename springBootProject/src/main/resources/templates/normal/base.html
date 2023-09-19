@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script th:src="@{/js/script.js}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+
+    function deleteContact(cid){
+
+      swal({
+        title: "Are you sure?",
+        text: "Do you want to delete this contact!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+              .then((willDelete) => {
+                if (willDelete) {
+                  window.location="/user/delete/"+cid;
+                } else {
+                  swal("Good.. Your contact is saved !");
+                }
+              });
+    }
+  </script>
+  <title th:text="${title}">Base</title>
+</head>
+<body>
+<!--navbar-->
+<nav class="fixed-top navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">SmartContactManager</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto text-uppercase">
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/}" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      
+
+      <li class="nav-item">
+        <a class="nav-link " ><span th:text="${user.name}"></span> </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " th:href="@{/logout}" href="#">Logout</a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+<!--end of navbar-->
+
+
+  <div class="sidebar mt-5">
+    <span onclick="toggleSidebar()" class="crossBtn">&times;</span>
+    <a id="home-link" href="#" th:href="@{/user/dashboard }" class="item active"><i class="fas fa-home"></i> Home</a>
+    <a id="contact-link" href="#" th:href="@{/user/show-contacts/0}" class="item"><i class="fas fa-id-card-alt"></i> View Contacts</a>
+    <a id="add-link" href="#" th:href="@{/user/add-contact}" class="item"><i class="fas fa-pencil-alt"></i> Add Contact</a>
+    <a id="profile-link" href="#" th:href="@{/user/profile}" class="item"><i class="fas fa-user-circle"></i> Profile</a>
+    <a id="setting-link" th:href="@{/user/settings}" href="#" class="item"><i class="fas fa-cogs"></i> Settings</a>
+    <a href="#" th:href="@{/logout}" class="item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <div class="divider"></div>
+
+
+  </div>
+
+  <div class="content mt-2">
+    <i onclick="toggleSidebar()" class="fa-solid fa-bars bar m-3"></i>
+    <div th:if="${session.message}" class="container">
+      <div th:classappend="${'alert-'+session.message.type}" class="alert text-center" role="alert">
+        <span th:text="${session.message.content}"></span>
+      </div>
+    </div>
+
+    <div th:replace="${content}" style="margin-top: 20px"></div>
+
+
+  </div>
+</body>
+
+</html>
